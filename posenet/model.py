@@ -10,14 +10,14 @@ def model_id_to_ord(model_id):
     if 0 <= model_id < 4:
         return model_id  # id is already ordinal
     elif model_id == 50:
-        return 0
+        return 0 #mobile_net_v1_050
     elif model_id == 75:
-        return 1
+        return 1 #mobile_net_v1_075
     elif model_id == 100:
-        return 2
-    else:  # 101
-        return 3
-
+        return 2 #mobile_net_v1_100
+    elif model_id == 101:  # 101
+        return 3 #mobile_net_v1_101
+    #TODO: convert to resnet
 
 def load_config(model_ord):
     converter_cfg = posenet.converter.config.load_config()
@@ -28,7 +28,7 @@ def load_config(model_ord):
     model_cfg = {
         'output_stride': output_stride,
         'checkpoint_name': checkpoint_name,
-    }
+        }
     return model_cfg
 
 
