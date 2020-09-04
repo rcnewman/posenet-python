@@ -116,7 +116,7 @@ def build_network(image, layers, variables):
 
     x = image
     buff = []
-    with tf.variable_scope(None, 'MobilenetV1'):
+    with tf.compat.v1.variable_scope(None, 'MobilenetV1'):
 
         for m in layers:
             stride = [1, m['stride'], m['stride'], 1]
@@ -162,12 +162,12 @@ def convert(model_id, model_dir, check=False):
         layers = to_output_strided_layers(mobile_net_arch, output_stride)
         variables = load_variables(chkpoint)
 
-        init = tf.global_variables_initializer()
+        init = tf.compat.v1.global_variables_initializer()
         with tf.Session() as sess:
             sess.run(init)
-            saver = tf.train.Saver()
+            saver = tf.compat.v1.train.Saver()
 
-            image_ph = tf.placeholder(tf.float32, shape=[1, None, None, 3], name='image')
+            image_ph = tf.compat.v1.placeholder(tf.float32, shape=[1, None, None, 3], name='image')
             outputs = build_network(image_ph, layers, variables)
 
             sess.run(
@@ -182,7 +182,7 @@ def convert(model_id, model_dir, check=False):
                 os.makedirs(os.path.dirname(save_path))
             checkpoint_path = saver.save(sess, save_path, write_state=False)
 
-            tf.train.write_graph(cg, model_dir, "model-%s.pbtxt" % chkpoint)
+            tf.io.write_graph(cg, model_dir, "model-%s.pbtxt" % chkpoint)
 
             # Freeze graph and write our final model file
             freeze_graph(
