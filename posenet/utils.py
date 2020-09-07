@@ -21,9 +21,13 @@ def _process_input(source_img, scale_factor=1.0, output_stride=16):
     input_img = input_img.reshape(1, target_height, target_width, 3)
     return input_img, source_img, scale
 
+def correct_rotation(frame, rotateCode):  
+    return cv2.rotate(frame, rotateCode) 
 
-def read_cap(cap, scale_factor=1.0, output_stride=16):
+def read_cap(cap, scale_factor=1.0, output_stride=16, rotate_code):
     res, img = cap.read()
+    if rotate_code is not None: #modified from stackoverflow
+        img = correct_rotation(img, rotate_code)
     if not res:
         raise IOError("webcam failure")
     return _process_input(img, scale_factor, output_stride)
