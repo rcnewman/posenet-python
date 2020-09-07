@@ -24,7 +24,7 @@ def _process_input(source_img, scale_factor=1.0, output_stride=16):
 def correct_rotation(frame, rotateCode):  
     return cv2.rotate(frame, rotateCode) 
 
-def read_cap(cap, scale_factor=1.0, output_stride=16, rotate_code):
+def read_cap(cap, scale_factor=1.0, output_stride=16, rotate_code=None):
     res, img = cap.read()
     if rotate_code is not None: #modified from stackoverflow
         img = correct_rotation(img, rotate_code)
